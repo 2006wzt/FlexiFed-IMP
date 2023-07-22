@@ -250,10 +250,4 @@ Here are some important tips to help you implement the global training correctly
 
 Here are some repositories and articles that I refer to during the implementation of the project :
 
-- Project Structure : [FlexiFed](https://github.com/fio1982/FlexiFed)
-- The architecture of ResNet : [pytorch_resnet_cifar10: Proper implementation of ResNet-s for CIFAR10/100 in pytorch that matches description of the original paper.](https://github.com/akamaster/pytorch_resnet_cifar10)
-- Loading of Speech Commands dataset : [pytorch-speech-commands: Speech commands recognition with PyTorch | Kaggle 10th place solution in TensorFlow Speech Recognition Challenge ](https://github.com/tugstugi/pytorch-speech-commands)
-- The architecture of CharCNN : [charcnn-classification: Character-level Convolutional Networks for Text Classification in Pytorch](https://github.com/Sandeep42/charcnn-classification)
-- The architecture of VDCNN : [Very-deep-cnn-pytorch: Very deep CNN for text classification](https://github.com/uvipen/Very-deep-cnn-pytorch)
-- Loading of AG News dataset : [pytorch-char-cnn-text-classification: A pytorch implementation of the paper "Character-level Convolutional Networks for Text Classification"](https://github.com/cswangjiawei/pytorch-char-cnn-text-classification)
 
