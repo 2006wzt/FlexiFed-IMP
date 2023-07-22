@@ -158,7 +158,7 @@ Four model familes are used to implement the experiment :
 
   We use the four vision of VGG-family : VGG-11, VGG-13, VGG-16, VGG-19, and the architectures of the nn are shown below :
 
-  <img src="http://raw.githubusercontent.com/2006wzt/FlexiFed-IMP/master/images/arch/VGG-family.png" alt="VGG-family.png" style="zoom:60%;" />
+  <img src="./images/arch/VGG-family.png" alt="VGG-family.png" style="zoom:60%;" />
 
   We can see that there is only one common base layer between different visions of VGG-family, so that we can expect that the difference between different aggregation strategies in VGG model may be obvious.
 
