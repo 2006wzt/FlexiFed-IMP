@@ -158,54 +158,102 @@ Four model familes are used to implement the experiment :
 
   We use the four vision of VGG-family : VGG-11, VGG-13, VGG-16, VGG-19, and the architectures of the nn are shown below :
 
-<div align=center>
-  <img src="http://raw.githubusercontent.com/2006wzt/FlexiFed-IMP/master/images/arch/VGG-family.png" alt="VGG-family.png" width=661 height=364/>
-</div>
+  <div align=center>
+    <img src="http://raw.githubusercontent.com/2006wzt/FlexiFed-IMP/master/images/arch/VGG-family.png" alt="VGG-family.png" width=661 height=364/>
+  </div>
 
   We can see that there is only one common base layer between different visions of VGG-family, so that we can expect that the difference between different aggregation strategies in VGG model may be obvious.
 
 - ResNet-family : ResNet is proposed mainly to tackle the degradation problem in deep nn and realize the proportional relationship between the depth of the network and model accuracy. The nn visions we use are stacks of BasicBlock, whose architecture is shown below (BasicBlock(planes) ) :
 
-<div align=center>
-  <img src="https://raw.githubusercontent.com/2006wzt/FlexiFed-IMP/master/images/arch/BasicBlock.png" alt="BasicBlock.png" width=271 height=196 style="zoom:45%;" />
-</div>
+  <div align=center>
+    <img src="https://raw.githubusercontent.com/2006wzt/FlexiFed-IMP/master/images/arch/BasicBlock.png" alt="BasicBlock.png" width=271 height=196 />
+  </div>
 
   Note that the downsample layer in BasicBlock may not be needed sometimes. We use the four vision of ResNet-family : ResNet-20, ResNet-32, ResNet-44, ResNet-56, and the architectures of the nn are shown below :
-  
-<div align=center>
-  <img src="http://raw.githubusercontent.com/2006wzt/FlexiFed-IMP/master/images/arch/ResNet-family.png" alt="ResNet-family.png" width=521 height=354 style="zoom:60%;" />
-</div>
+
+  <div align=center>
+    <img src="http://raw.githubusercontent.com/2006wzt/FlexiFed-IMP/master/images/arch/ResNet-family.png" alt="ResNet-family.png" width=521 height=354 />
+  </div>
+
 
   The layer's parameters of ResNet-family include : [3,3,3], [5,5,5], [7,7,7], [9,9,9].
 
 - CharCNN : Character-level convolutional neural networks proves that convolutional neural networks can also implement text classification with finer granularity.
 
   We use the four vision of CharCNN-family : CharCNN-3, CharCNN-4, CharCNN-5, CharCNN-6, and the architectures of the nn are shown below :
-<div align=center>
-  <img src="http://raw.githubusercontent.com/2006wzt/FlexiFed-IMP/master/images/arch/CharCNN-family.png" alt="CharCNN-family.png" width=509 height=317 style="zoom:60%;" />
-</div>
+
+  <div align=center>
+    <img src="http://raw.githubusercontent.com/2006wzt/FlexiFed-IMP/master/images/arch/CharCNN-family.png" alt="CharCNN-family.png" width=509 height=317 />
+  </div>
 
   In my mind, the CharCNN models designed in this project are easy to converge to local minimun on the AG_News dataset. The convergence process will be unexpected sometimes.
 
 - VDCNN : Very Deep Convolutional neural network is similar to ResNet, allowing deeper networks to bring higher accuracy by computing residuals. The nn visions we use are stacks of ConvBlock, whose architecture is shown below (ConvBlock(planes) ) :
-<div align=center>
-  <img src="https://raw.githubusercontent.com/2006wzt/FlexiFed-IMP/master/images/arch/ConvBlock.png" alt="ConvBlock.png" width=186 height=135 style="zoom:60%;" />
-</div>
+
+  <div align=center>
+  <img src="https://raw.githubusercontent.com/2006wzt/FlexiFed-IMP/master/images/arch/ConvBlock.png" alt="ConvBlock.png" width=271 height=196 />
+  </div>
 
   Note that the downsample layer in ConvBlock may not be needed sometimes. We use the four vision of VDCNN-family : VDCNN-9, VDCNN-17, VDCNN-29, VDCNN-49, and the architectures of the nn are shown below :
-<div align=center>
-  <img src="http://raw.githubusercontent.com/2006wzt/FlexiFed-IMP/master/images/arch/VDCNN-family.png" alt="VDCNN-family.png" style="zoom:60%;" weight=497 height=404 />
-</div>
 
+  <div align=center>
+    <img src="http://raw.githubusercontent.com/2006wzt/FlexiFed-IMP/master/images/arch/VDCNN-family.png" alt="VDCNN-family.png" weight=497 height=404 />
+  </div>
+  
   The layer's parameters of VDCNN-family include : [0,0,0,0], [1,1,1,1], [4,4,1,1], [7,7,4,2]. According to my experimental results, the convergence process of VDCNN is oscillating, and the accuracy rate is not rising steadily. 
 
 ## Parameter Setting
 
+- Optimizer : torch.optim.SGD
+- Learning Rate : 0.01
+- Momentum : 0.9
+- Weight_decay : 5e-4
+- num_clients : 8
+- communication_round : 70
+
+The optimizer for local training is SGD and its parameters (lr, momentum, weight_decay) are shown above. We set the number of clients in the FL system to 8, and each two clients share a vision of the model-family (e.g. [0,1] - VGG-11, [2,3] - VGG-13, [4,5] - VGG-16, [6,7] - VGG-19) . Every client has a uid to identify them uniquely and the parameter server will use the uid to access these clients in order to aggregate the model of these clients.
+
 ## Training Tips
+
+Here are some important tips to help you implement the global training correctly :
+
+- We will divide the dataset equally according to the number of clients in order to simulate that the data from different clients are personalized i.e. data heterogeneity.
+
+- We will divide each client's dataset into 10 batches and select the batch in trun for local training in order to simulate that the data for each local training is not necessarily the same.
+
+- To promise the data diversity of a batch for local training, the shuffle operation before dividing the dataset is necessary, e.g. 
+
+  The label of a batch before shuffle :
+
+  ```python
+  tensor([7, 0, 7, 0, 7, 0, 7, 7, 0, 7, 0, 7, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+          0, 0, 0, 0, 7, 0, 7, 7, 7, 7, 7, 7, 0, 0, 7, 0, 7, 7, 0, 0, 7, 0, 0, 0,
+          0, 0, 7, 7, 7, 0, 7, 0, 7, 0, 0, 7, 0, 7, 0, 7])
+  ```
+
+  The label of a batch after shuffle :
+
+  ```python
+  tensor([6, 4, 7, 7, 7, 6, 2, 0, 7, 0, 5, 9, 4, 0, 3, 7, 6, 3, 9, 0, 5, 7, 7, 9,
+          5, 5, 3, 3, 0, 6, 1, 7, 9, 5, 3, 7, 0, 7, 1, 0, 4, 6, 6, 3, 2, 9, 4, 4,
+          0, 2, 4, 8, 3, 3, 9, 1, 3, 1, 6, 2, 4, 8, 5, 7])
+  ```
+
+- Because the purpose of this project is mainly to prove the effectiveness of FlexiFed aggregation strategy, I do not spend too much attention on model design and data processing. Readers can further improve the accuracy of the involved model through some Data Augmentation operations.
 
 ## Results
 
 
 
 ## References
+
+Here are some repositories and articles that I refer to during the implementation of the project :
+
+- Project Structure : [FlexiFed](https://github.com/fio1982/FlexiFed)
+- The architecture of ResNet : [pytorch_resnet_cifar10: Proper implementation of ResNet-s for CIFAR10/100 in pytorch that matches description of the original paper.](https://github.com/akamaster/pytorch_resnet_cifar10)
+- Loading of Speech Commands dataset : [pytorch-speech-commands: Speech commands recognition with PyTorch | Kaggle 10th place solution in TensorFlow Speech Recognition Challenge ](https://github.com/tugstugi/pytorch-speech-commands)
+- The architecture of CharCNN : [charcnn-classification: Character-level Convolutional Networks for Text Classification in Pytorch](https://github.com/Sandeep42/charcnn-classification)
+- The architecture of VDCNN : [Very-deep-cnn-pytorch: Very deep CNN for text classification](https://github.com/uvipen/Very-deep-cnn-pytorch)
+- Loading of AG News dataset : [pytorch-char-cnn-text-classification: A pytorch implementation of the paper "Character-level Convolutional Networks for Text Classification"](https://github.com/cswangjiawei/pytorch-char-cnn-text-classification)
 
