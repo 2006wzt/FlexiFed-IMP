@@ -247,6 +247,7 @@ Here are some important tips to help you implement the global training correctly
 I will show you the results of federated learning for models with architecture heterogeneity on different datasets. Each result includes two pictures ( the convergence process under different strategy and different model ) and one table ( the final accuracy of the model trained by the FL system).
 
 We assume that the number of clients in FL system is n, the accuracy of version v model is Acc_v, then there is :
+
 $$
 Acc_v=\frac4n\sum_{i=1}^{n/4}Acc_{v-i}
 $$
