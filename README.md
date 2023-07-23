@@ -88,7 +88,7 @@ The structure of the project is shown below :
 - src/utils :
 
   > - Dataset.py : There are some necessary functions to get the dataset (`get_dataset`)  and split the dataset by index (`get_idx_dict`) . The relevant dataset includes : CIFAR-10, CINIC-10, Speech-Commands, AG-News
-  > - Visualization : There are functions to visualize the result of the FL schemes and two figures will be created : the convergence process of models in the same family with different vision under the same aggregation strategy, the convergence process of models in the same family with same vision under different aggregation strategy
+  > - Visualization : There are functions to visualize the result of the FL schemes and two figures will be created : the convergence process of models in the same family with different version under the same aggregation strategy, the convergence process of models in the same family with same version under different aggregation strategy
 
 - src/core:
 
@@ -126,11 +126,11 @@ Four datasets are used to train the model :
 
 - Speech-Commands : A dataset used for speech recognition, which has 65,000 one-second-long audio clips of different keywords. We just care about the classes include : 'down', 'go', 'left', 'no', 'off', 'on', 'right', 'stop', 'up', 'yes', so that we will set the label of other classes to '\_unknown\_'. Note that there is also a class named '\_silence\_', I split the audio in \_background\_noise\_ to one-second-long clips and add some waveforms initialized by zero to constitute the '\_silence\_' data in the train dataset.
 
-  You can [use this link](http://download.tensorflow.org/data/speech_commands_v0.01.tar.gz) to download the train dataset and [use this link](http://download.tensorflow.org/data/speech_commands_test_set_v0.01.tar.gz) to download the test dataset. Note that the vision of the Speech-Commands dataset I used is v0.01. You will get a 1x16,000 array after loading an audio and I will transform this array to a 1x32x32 matrix by some complicated operations ( you can read the code of `src/utils/Dataset.py` to get some details) . Finally, we can load the dataset by the class we design, like :
+  You can [use this link](http://download.tensorflow.org/data/speech_commands_v0.01.tar.gz) to download the train dataset and [use this link](http://download.tensorflow.org/data/speech_commands_test_set_v0.01.tar.gz) to download the test dataset. Note that the version of the Speech-Commands dataset I used is v0.01. You will get a 1x16,000 array after loading an audio and I will transform this array to a 1x32x32 matrix by some complicated operations ( you can read the code of `src/utils/Dataset.py` to get some details) . Finally, we can load the dataset by the class we design, like :
 
   ```python
-  train_dataset=Speech_CommandsDataset("../../dataset/Speech-Commands/train",data_transforms['train'])
-  test_dataset=Speech_CommandsDataset("../../dataset/Speech-Commands/test",data_transforms['test'])
+  train_dataset=Speech_CommandsDataset(path+"/train",data_transforms['train'])
+  test_dataset=Speech_CommandsDataset(path+"/test",data_transforms['test'])
   ```
 
   We use this dataset to train VGG-family and ResNet-family.
@@ -141,11 +141,11 @@ Four datasets are used to train the model :
 
   ```python
   # CharCNN
-  train_dataset=AG_NewsDataset("../../dataset/AG-News/train/train.csv",1014,alphabet)
-  test_dataset=AG_NewsDataset("../../dataset/AG-News/test/test.csv",1014,alphabet)
+  train_dataset=AG_NewsDataset(path+"/train/train.csv",1014,alphabet)
+  test_dataset=AG_NewsDataset(path+"/test/test.csv",1014,alphabet)
   # VDCNN
-  train_dataset=AG_NewsDataset("../../dataset/AG-News/train/train.csv",1024,alphabet)
-  test_dataset=AG_NewsDataset("../../dataset/AG-News/test/test.csv",1024,alphabet)
+  train_dataset=AG_NewsDataset(path+"/train/train.csv",1024,alphabet)
+  test_dataset=AG_NewsDataset(path+"/test/test.csv",1024,alphabet)
   ```
 
   We use this dataset to train CharCNN-family and VDCNN-family.
@@ -156,21 +156,21 @@ Four model familes are used to implement the experiment :
 
 - VGG-family : Visual Geometry Group is an architecture of deep neural network (nn) , it performed very well on ILSVRC 2014 and proved that increasing the depth of the network can affect the final performance of the network to a certain extent.
 
-  We use the four vision of VGG-family : VGG-11, VGG-13, VGG-16, VGG-19, and the architectures of the nn are shown below :
+  We use the four versions of VGG-family : VGG-11, VGG-13, VGG-16, VGG-19, and the architectures of the nn are shown below :
 
   <div align=center>
     <img src="http://raw.githubusercontent.com/2006wzt/FlexiFed-IMP/master/images/arch/VGG-family.png" alt="VGG-family.png" width=661 height=364/>
   </div>
 
-  We can see that there is only one common base layer between different visions of VGG-family, so that we can expect that the difference between different aggregation strategies in VGG model may be obvious.
+  We can see that there is only one common base layer between different versions of VGG-family, so that we can expect that the difference between different aggregation strategies in VGG model may be obvious.
 
-- ResNet-family : ResNet is proposed mainly to tackle the degradation problem in deep nn and realize the proportional relationship between the depth of the network and model accuracy. The nn visions we use are stacks of BasicBlock, whose architecture is shown below (BasicBlock(planes) ) :
+- ResNet-family : ResNet is proposed mainly to tackle the degradation problem in deep nn and realize the proportional relationship between the depth of the network and model accuracy. The nn versions we use are stacks of BasicBlock, whose architecture is shown below (BasicBlock(planes) ) :
 
   <div align=center>
     <img src="https://raw.githubusercontent.com/2006wzt/FlexiFed-IMP/master/images/arch/BasicBlock.png" alt="BasicBlock.png" width=271 height=196 />
   </div>
 
-  Note that the downsample layer in BasicBlock may not be needed sometimes. We use the four vision of ResNet-family : ResNet-20, ResNet-32, ResNet-44, ResNet-56, and the architectures of the nn are shown below :
+  Note that the downsample layer in BasicBlock may not be needed sometimes. We use the four versions of ResNet-family : ResNet-20, ResNet-32, ResNet-44, ResNet-56, and the architectures of the nn are shown below :
 
   <div align=center>
     <img src="http://raw.githubusercontent.com/2006wzt/FlexiFed-IMP/master/images/arch/ResNet-family.png" alt="ResNet-family.png" width=521 height=354 />
@@ -181,7 +181,7 @@ Four model familes are used to implement the experiment :
 
 - CharCNN : Character-level convolutional neural networks proves that convolutional neural networks can also implement text classification with finer granularity.
 
-  We use the four vision of CharCNN-family : CharCNN-3, CharCNN-4, CharCNN-5, CharCNN-6, and the architectures of the nn are shown below :
+  We use the four versions of CharCNN-family : CharCNN-3, CharCNN-4, CharCNN-5, CharCNN-6, and the architectures of the nn are shown below :
 
   <div align=center>
     <img src="http://raw.githubusercontent.com/2006wzt/FlexiFed-IMP/master/images/arch/CharCNN-family.png" alt="CharCNN-family.png" width=509 height=317 />
@@ -189,13 +189,13 @@ Four model familes are used to implement the experiment :
 
   In my mind, the CharCNN models designed in this project are easy to converge to local minimun on the AG_News dataset. The convergence process will be unexpected sometimes.
 
-- VDCNN : Very Deep Convolutional neural network is similar to ResNet, allowing deeper networks to bring higher accuracy by computing residuals. The nn visions we use are stacks of ConvBlock, whose architecture is shown below (ConvBlock(planes) ) :
+- VDCNN : Very Deep Convolutional neural network is similar to ResNet, allowing deeper networks to bring higher accuracy by computing residuals. The nn versions we use are stacks of ConvBlock, whose architecture is shown below (ConvBlock(planes) ) :
 
   <div align=center>
   <img src="https://raw.githubusercontent.com/2006wzt/FlexiFed-IMP/master/images/arch/ConvBlock.png" alt="ConvBlock.png" width=271 height=196 />
   </div>
 
-  Note that the downsample layer in ConvBlock may not be needed sometimes. We use the four vision of VDCNN-family : VDCNN-9, VDCNN-17, VDCNN-29, VDCNN-49, and the architectures of the nn are shown below :
+  Note that the downsample layer in ConvBlock may not be needed sometimes. We use the four versions of VDCNN-family : VDCNN-9, VDCNN-17, VDCNN-29, VDCNN-49, and the architectures of the nn are shown below :
 
   <div align=center>
     <img src="http://raw.githubusercontent.com/2006wzt/FlexiFed-IMP/master/images/arch/VDCNN-family.png" alt="VDCNN-family.png" weight=497 height=404 />
@@ -212,7 +212,7 @@ Four model familes are used to implement the experiment :
 - num_clients : 8
 - communication_round : 70
 
-The optimizer for local training is SGD and its parameters (lr, momentum, weight_decay) are shown above. We set the number of clients in the FL system to 8, and each two clients share a vision of the model-family (e.g. [0,1] - VGG-11, [2,3] - VGG-13, [4,5] - VGG-16, [6,7] - VGG-19) . Every client has a uid to identify them uniquely and the parameter server will use the uid to access these clients in order to aggregate the model of these clients.
+The optimizer for local training is SGD and its parameters (lr, momentum, weight_decay) are shown above. We set the number of clients in the FL system to 8, and each two clients share a version of the model-family (e.g. [0,1] - VGG-11, [2,3] - VGG-13, [4,5] - VGG-16, [6,7] - VGG-19) . Every client has a uid to identify them uniquely and the parameter server will use the uid to access these clients in order to aggregate the model of these clients.
 
 ## Training Tips
 
@@ -244,10 +244,72 @@ Here are some important tips to help you implement the global training correctly
 
 ## Results
 
+I will show you the results of federated learning for models with architecture heterogeneity on different datasets. Each result includes two pictures ( the convergence process under different strategy and different model ) and one table ( the final accuracy of the model trained by the FL system).
+$$
+Acc=\frac4{\text{num_clients}}\sum_{i=1}^{\text{num_clients}/4}Acc_i
+$$
+
+- VGG-family on CIFAR-10 :
+
+  <div align=center>
+    <img src="https://raw.githubusercontent.com/2006wzt/FlexiFed-IMP/master/images/result/VGG_CIFAR_10_1.png"/>
+  </div>
+
+  <div align=center>
+    <img src="http://raw.githubusercontent.com/2006wzt/FlexiFed-IMP/master/images/result/VGG_CIFAR_10_2.png"/>
+  </div>
+
+  |      Scheme      |   V1   |   V2   |   V3   |   V4   |
+  | :--------------: | :----: | :----: | :----: | :----: |
+  |    Standalone    | 0.6936 | 0.7480 | 0.7084 | 0.7364 |
+  |   Clustered-FL   | 0.7848 | 0.8068 | 0.7960 | 0.8152 |
+  |   Basic-Common   | 0.7136 | 0.7368 | 0.7184 | 0.7152 |
+  | Clustered-Common | 0.7560 | 0.8000 | 0.7968 | 0.7892 |
+  |    Max-Common    | 0.7680 | 0.8428 | 0.8640 | 0.8428 |
+
+- VGG-family on CINIC-10 :
+
+  
+
+- VGG-family on Speech Commands :
+
+- ResNet-family on CIFAR-10 :
+
+- ResNet-family on CINIC-10 :
+
+- ResNet-family on Speech Commands :
+
+- CharCNN-family on AG News :
+
+- VDCNN-family on AG News :
+
 
 
 ## References
 
 Here are some repositories and articles that I refer to during the implementation of the project :
 
+- Project Structure : 
+
+  [fio1982/FlexiFed (github.com)](https://github.com/fio1982/FlexiFed)
+
+- The architecture of ResNet : 
+
+  [pytorch_resnet_cifar10: Proper implementation of ResNet-s for CIFAR10/100 in pytorch that matches description of the original paper.](https://github.com/akamaster/pytorch_resnet_cifar10)
+
+- Loading of Speech Commands dataset : 
+
+  [pytorch-speech-commands: Speech commands recognition with PyTorch | Kaggle 10th place solution in TensorFlow Speech Recognition Challenge ](https://github.com/tugstugi/pytorch-speech-commands)
+
+- The architecture of CharCNN : 
+
+  [charcnn-classification: Character-level Convolutional Networks for Text Classification in Pytorch](https://github.com/Sandeep42/charcnn-classification)
+
+- The architecture of VDCNN : 
+
+  [Very-deep-cnn-pytorch: Very deep CNN for text classification](https://github.com/uvipen/Very-deep-cnn-pytorch)
+
+- Loading of AG News dataset : 
+
+  [pytorch-char-cnn-text-classification: A pytorch implementation of the paper "Character-level Convolutional Networks for Text Classification"](https://github.com/cswangjiawei/pytorch-char-cnn-text-classification)
 
