@@ -245,8 +245,10 @@ Here are some important tips to help you implement the global training correctly
 ## Results
 
 I will show you the results of federated learning for models with architecture heterogeneity on different datasets. Each result includes two pictures ( the convergence process under different strategy and different model ) and one table ( the final accuracy of the model trained by the FL system).
+
+We assume that the number of clients in FL system is n, the accuracy of version v model is Acc_v, then there is :
 $$
-Acc=\frac4{\text{num_clients}}\sum_{i=1}^{\text{num_clients}/4}Acc_i
+Acc_v=\frac4n\sum_{i=1}^{n/4}Acc_{v-i}
 $$
 
 - VGG-family on CIFAR-10 :
@@ -266,8 +268,16 @@ $$
   |   Basic-Common   | 0.7136 | 0.7368 | 0.7184 | 0.7152 |
   | Clustered-Common | 0.7560 | 0.8000 | 0.7968 | 0.7892 |
   |    Max-Common    | 0.7680 | 0.8428 | 0.8640 | 0.8428 |
-
+  
 - VGG-family on CINIC-10 :
+
+  <div align=center>
+    <img src="http://raw.githubusercontent.com/2006wzt/FlexiFed-IMP/master/images/result/VGG_CINIC_10_1.png"/>
+  </div>
+
+  <div align=center>
+    <img src="https://raw.githubusercontent.com/2006wzt/FlexiFed-IMP/master/images/result/VGG_CINIC_10_2.png"/>
+  </div>
 
   
 
