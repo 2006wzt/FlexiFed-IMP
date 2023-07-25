@@ -51,20 +51,9 @@ The structure of the project is shown below :
 |
 ├─dataset
 │  ├─CIFAR-10     
-|  |  ├─train
-|  |  └─test
-|  |
 |  ├─CINIC-10
-|  |  ├─train
-|  |  └─test
-|  |
 |  ├─Speech-Commands
-|  |  ├─train
-|  |  └─test
-|  |
 |  └─AG-News
-|     ├─train
-|     └─test
 |
 └─README.md
 ```
@@ -248,6 +237,7 @@ I will show you the results of federated learning for models with architecture h
 
 We assume that the number of clients in FL system is n, the accuracy of version v model is Acc_v, then there is :
 
+
 $$
 Acc_v=\frac4n\sum_{i=1}^{n/4}Acc_{v-i}
 $$
@@ -280,17 +270,89 @@ $$
     <img src="https://raw.githubusercontent.com/2006wzt/FlexiFed-IMP/master/images/result/VGG_CINIC_10_2.png"/>
   </div>
 
-  
+  |      Scheme      |   V1   |   V2   |   V3   |   V4   |
+  | :--------------: | :----: | :----: | :----: | :----: |
+  |    Standalone    | 0.6319 | 0.6730 | 0.6434 | 0.6561 |
+  |   Clustered-FL   | 0.7111 | 0.7404 | 0.7292 | 0.7331 |
+  |   Basic-Common   | 0.6129 | 0.6619 | 0.6379 | 0.6225 |
+  | Clustered-Common | 0.6895 | 0.7317 | 0.7420 | 0.7228 |
+  |    Max-Common    | 0.6772 | 0.7772 | 0.7892 | 0.7874 |
 
 - VGG-family on Speech Commands :
 
+  <div align=center>
+    <img src="http://raw.githubusercontent.com/2006wzt/FlexiFed-IMP/master/images/result/VGG_Speech_Commands_1.png"/>
+  </div>
+
+  <div align=center>
+    <img src="http://raw.githubusercontent.com/2006wzt/FlexiFed-IMP/master/images/result/VGG_Speech_Commands_2.png"/>
+  </div>
+
+  |      Scheme      |   V1   |   V2   |   V3   |   V4   |
+  | :--------------: | :----: | :----: | :----: | :----: |
+  |    Standalone    | 0.9207 | 0.9385 | 0.9077 | 0.9184 |
+  |   Clustered-FL   | 0.9516 | 0.9468 | 0.9681 | 0.9575 |
+  |   Basic-Common   | 0.9219 | 0.9385 | 0.9055 | 0.9126 |
+  | Clustered-Common | 0.9373 | 0.9563 | 0.9587 | 0.9598 |
+  |    Max-Common    | 0.9327 | 0.9787 | 0.9764 | 0.9764 |
+
 - ResNet-family on CIFAR-10 :
+
+  <div align=center>
+    <img src="https://raw.githubusercontent.com/2006wzt/FlexiFed-IMP/master/images/result/ResNet_CIFAR_10_1.png"/>
+  </div>
+
+  <div align=center>
+    <img src="https://raw.githubusercontent.com/2006wzt/FlexiFed-IMP/master/images/result/ResNet_CIFAR_10_2.png"/>
+  </div>
+
+  |      Scheme      |   V1   |   V2   |   V3   |   V4   |
+  | :--------------: | :----: | :----: | :----: | :----: |
+  |    Standalone    | 0.6764 | 0.7044 | 0.6884 | 0.7052 |
+  |   Clustered-FL   | 0.7824 | 0.7604 | 0.7796 | 0.7624 |
+  |   Basic-Common   | 0.7156 | 0.7164 | 0.7000 | 0.6908 |
+  | Clustered-Common | 0.7856 | 0.7672 | 0.7888 | 0.7752 |
+  |    Max-Common    | 0.7828 | 0.7944 | 0.7944 | 0.7956 |
 
 - ResNet-family on CINIC-10 :
 
+  <div align=center>
+    <img src="https://raw.githubusercontent.com/2006wzt/FlexiFed-IMP/master/images/result/ResNet_CINIC_10_1.png"/>
+  </div>
+
+  <div align=center>
+    <img src="http://raw.githubusercontent.com/2006wzt/FlexiFed-IMP/master/images/result/ResNet_CINIC_10_2.png"/>
+  </div>
+
+  |      Scheme      |   V1   |   V2   |   V3   |   V4   |
+  | :--------------: | :----: | :----: | :----: | :----: |
+  |    Standalone    | 0.6190 | 0.6470 | 0.6402 | 0.6360 |
+  |   Clustered-FL   | 0.7014 | 0.7067 | 0.7156 | 0.7162 |
+  |   Basic-Common   | 0.6525 | 0.6385 | 0.6528 | 0.6539 |
+  | Clustered-Common | 0.7066 | 0.7119 | 0.7300 | 0.7249 |
+  |    Max-Common    | 0.7233 | 0.7252 | 0.7283 | 0.7281 |
+
 - ResNet-family on Speech Commands :
 
+  <div align=center>
+    <img src="http://raw.githubusercontent.com/2006wzt/FlexiFed-IMP/master/images/result/ResNet_Speech_Commands_1.png"/>
+  </div>
+
+  <div align=center>
+    <img src="https://raw.githubusercontent.com/2006wzt/FlexiFed-IMP/master/images/result/ResNet_Speech_Commands_2.png"/>
+  </div>
+
+  |      Scheme      |   V1   |   V2   |   V3    |   V4   |
+  | :--------------: | :----: | :----: | :-----: | :----: |
+  |    Standalone    | 0.9101 | 0.9160 | 0.8723  | 0.9031 |
+  |   Clustered-FL   | 0.9326 | 0.9480 | 0.9350  | 0.9480 |
+  |   Basic-Common   | 0.9031 | 0.9054 | 0.9243  | 0.9291 |
+  | Clustered-Common | 0.9551 | 0.9445 | 0.94325 | 0.9303 |
+  |    Max-Common    | 0.9374 | 0.9563 | 0.9610  | 0.9433 |
+
 - CharCNN-family on AG News :
+
+  
 
 - VDCNN-family on AG News :
 
