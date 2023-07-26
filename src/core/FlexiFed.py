@@ -12,7 +12,7 @@ class ParameterServer():
         self.acc={i:[] for i in range(num_clients)}
         self.device=torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     '''Clobal Training'''
-    def ServerGlobalTraining(self,train_dataset,test_dataset,communication_round,strategy,stage):
+    def ServerGlobalTraining(self,train_dataset,test_dataset,communication_round,strategy,family_name,data_name):
         localData_len=len(self.Clients[0].train_idx)/10
         start=0
         for epoch in range(communication_round):
@@ -46,11 +46,11 @@ class ParameterServer():
         '''Save the convergence process'''
         print(self.acc)
         df=pd.DataFrame(self.acc)
-        df.to_csv("../../result/{}/{}/result.csv".format(stage,strategy),index=False)
+        df.to_csv("../../result/{} {}/{}/result.csv".format(family_name,data_name,strategy),index=False)
         '''Save the Client's model'''
         for uid in range(self.num_clients):
             torch.save(self.Clients[uid].model.state_dict(),
-                       "../../model/{}/{}/Client{}.pkl".format(stage,strategy,uid))
+                       "../../model/{} {}/{}/Client{}.pkl".format(family_name,data_name,strategy,uid))
 
 
     '''Basic_Common Strategy'''

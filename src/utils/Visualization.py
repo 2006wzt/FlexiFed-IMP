@@ -5,12 +5,12 @@ import warnings
 warnings.filterwarnings("ignore")
 
 '''Visualization for acc'''
-def visualization(mode,stage,dataset_name,communication_round,num_clients,family_name,uid_list):
-    df_B=pd.read_csv("../../result/{}/Basic-Common/{}/result.csv".format(stage,dataset_name))
-    df_C=pd.read_csv("../../result/{}/Clustered-Common/{}/result.csv".format(stage,dataset_name))
-    df_M=pd.read_csv("../../result/{}/Max-Common/{}/result.csv".format(stage,dataset_name))
-    df_S=pd.read_csv("../../result/{}/Standalone/{}/result.csv".format(stage,dataset_name))
-    df_CL=pd.read_csv("../../result/{}/Clustered-FL/{}/result.csv".format(stage,dataset_name))
+def visualization(mode,dataset_name,communication_round,num_clients,family_name,uid_list):
+    df_B=pd.read_csv("../../result/{} {}/Basic-Common/result.csv".format(family_name,dataset_name))
+    df_C=pd.read_csv("../../result/{} {}/Clustered-Common/result.csv".format(family_name,dataset_name))
+    df_M=pd.read_csv("../../result/{} {}/Max-Common/result.csv".format(family_name,dataset_name))
+    df_S=pd.read_csv("../../result/{} {}/Standalone/result.csv".format(family_name,dataset_name))
+    df_CL=pd.read_csv("../../result/{} {}/Clustered-FL/result.csv".format(family_name,dataset_name))
     model_name={
         "VGG":["VGG-11","VGG-13","VGG-16","VGG-19"],
         "ResNet":["ResNet-20","ResNet-32","ResNet-44","ResNet-56"],
@@ -70,6 +70,16 @@ def visualization(mode,stage,dataset_name,communication_round,num_clients,family
         fig.legend( lines, labels,loc="upper center",ncol=5, framealpha=1)
         plt.show()
 
+    if mode==2:
+        fig=plt.figure(figsize=(10,3.2))
+        ax=fig.add_axes([0.105,0.1,0.8,0.7])
+        draw_bar2(ax)
+        ax.set_title(family_name+" on "+dataset_name)
+
+        lines, labels = fig.axes[-1].get_legend_handles_labels()
+        fig.legend( lines, labels,loc="upper center",ncol=5, framealpha=1)
+        plt.show()
+
 def draw_plot0(df,ax,communication_round,strategy,num_clients,family_name,uid_list):
     x=[i for i in range(communication_round)]
     v1=list(df.iloc[:,uid_list[0]])
@@ -112,4 +122,41 @@ def draw_plot1(df_S,df_CL,df_B,df_C,df_M,v,ax,communication_round,architecture,n
     ax.set_xticklabels([i for i in range(0,communication_round+1,10)])
     ax.set_yticks([i/10 for i in range(int(math.floor(min([min(vB),min(vC),min(vM)])*10)),9,1)])
     ax.set_yticklabels([i/10 for i in range(int(math.floor(min([min(vB),min(vC),min(vM)])*10)),9,1)])
+    ax.grid(linestyle='-.')
+
+def draw_bar2(ax):
+    ax.set_ylim(0.2,0.95)
+    ax.set_xlim(0,86)
+
+    x_Standalone=[7,27,47,67]
+    x_Clustered_FL=[10,30,50,70]
+    x_Basic_Common=[13,33,53,73]
+    x_Clustered_Common=[16,36,56,76]
+    x_Max_Common=[19,39,59,79]
+
+    y_Standalone=[0.26,0.69,0.71,0.76]
+    y_Clustered_FL=[0.25,0.83,0.74,0.75]
+    y_Basic_Common=[0.80,0.86,0.85,0.83]
+    y_Clustered_Common=[0.80,0.87,0.82,0.83]
+    y_Max_Common=[0.66,0.87,0.85,0.86]
+
+    rects1=ax.bar(x=x_Standalone,height=y_Standalone,width=3,color='dodgerblue',label='Standalone')
+    rects2=ax.bar(x=x_Clustered_FL,height=y_Clustered_FL,width=3,color='lightgreen',label='Clustered-FL')
+    rects3=ax.bar(x=x_Basic_Common,height=y_Basic_Common,width=3,color='midnightblue',label='Basic-Common')
+    rects4=ax.bar(x=x_Clustered_Common,height=y_Clustered_Common,width=3,color='green',label='Clustered-Common')
+    rects5=ax.bar(x=x_Max_Common,height=y_Max_Common,width=3,color='gold',label='Max-Common')
+
+    ax.set_xticks(x_Basic_Common)
+    ax.set_xticklabels(('V1','V2','V3','V4'))
+
+    def label(ax,rects):
+        for rect in rects:
+            height=rect.get_height()
+            ax.text(rect.get_x(),height+0.01,str(height),fontsize=9)
+
+    label(ax,rects1)
+    label(ax,rects2)
+    label(ax,rects3)
+    label(ax,rects4)
+    label(ax,rects5)
     ax.grid(linestyle='-.')

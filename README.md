@@ -50,11 +50,16 @@ The structure of the project is shown below :
 |     └─main.py
 |
 ├─dataset
-│  ├─CIFAR-10     
-|  ├─CINIC-10
-|  ├─Speech-Commands
-|  └─AG-News
+├─model
+├─result
+├─final result
+├─images
 |
+├─materials
+│  ├─Main idea.pdf     
+|  └─Reproduction process.pdf
+|
+├─README.pdf
 └─README.md
 ```
 
@@ -84,6 +89,20 @@ The structure of the project is shown below :
   > - Clients.py : There is an important class to simulate the clients in edge, which has the ability to train and test locally
   > - FlexiFed.py : The FlexiFed frame named ParamserServer, which has a client-set to simulate the clients in the FL System, has three aggregation strategies (Basic-Common, Clustered-Common, Max-Common) and a function to train clients globally
   > - main.py : The main function to run the FL System, you can run different system by setting the parameters : num_clients (the number of the clients in FL System), family_name (the model family), dataset_name, communication_round (the rounds of global training), strategy (the aggregation strategy)
+  
+- dataset : You can download the dataset from the link in this folder.
+
+- model : You can download the models from the link in this folder.
+
+- result : There are the .csv files that record the convergence process, includes : VGG-CIFAR-10, VGG-CINIC-10, VGG-Speech-Commands, ResNet-CIFAR-10, ResNet-CINIC-10, ResNet-Speech-Commands, CharCNN-AG-NEWS, VDCNN-AG-NEWS
+
+- final result : There are .docx and .pdf files recording the accuracy table of the final result.
+
+- images : There are relevant images for this project.
+
+- materials :
+
+  > - Main idea.pdf : Here is a record of my interpretation of this paper.
 
 ## Datasets
 
@@ -442,7 +461,7 @@ $$
 $$
 Clustered-FL\approx Clustered-Common
 $$
-  
+
   This demonstrates the usefulness of FlexiFed. The idea "aggragate the model in FL system to the maximum extent" does work and the gains from Max-Common strategy are significant.
 
 - Differences :
