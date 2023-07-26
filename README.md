@@ -56,8 +56,7 @@ The structure of the project is shown below :
 ├─images
 |
 ├─materials
-│  ├─Main idea.pdf     
-|  └─Reproduction process.pdf
+│  └─Main idea.pdf     
 |
 ├─README.pdf
 └─README.md
