@@ -434,6 +434,7 @@ I will compare my results with the result in Table1 of the paper and analyze the
   $$
   Standalone\approx Basic-Common<Clustered-FL\approx Clustered-Common<Max-Common
   $$
+  
   This demonstrates the usefulness of FlexiFed. The idea "aggragate the model in FL system to the maximum extent" does work and the gains from Max-Common strategy are significant.
 
 - Differences :
