@@ -431,9 +431,17 @@ I will compare my results with the result in Table1 of the paper and analyze the
   Although the differences between the various aggregation strategies are not obvious in the convergence process figures, the value relationship for accuracy is almost the same as that in Table1, which satisfies :
 
   
-  $$
-  Standalone\approx Basic-Common<Clustered-FL\approx Clustered-Common<Max-Common
-  $$
+$$
+Basic-Common < Clustered-Common < Max-Common
+$$
+
+$$
+Standalone\approx Basic-Common
+$$
+
+$$
+Clustered-FL\approx Clustered-Common
+$$
   
   This demonstrates the usefulness of FlexiFed. The idea "aggragate the model in FL system to the maximum extent" does work and the gains from Max-Common strategy are significant.
 
