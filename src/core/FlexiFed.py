@@ -124,7 +124,7 @@ class ParameterServer():
     '''Max-Common Strategy'''
     def Max_Common(self,Clients,uid_list):
         if len(uid_list)==1 or len(uid_list)==0:
-            return Clients
+            return
         common_base_layer_list=self.Basic_Common(Clients,uid_list)
         group_dict={}
         # split the clients to groups according to the common base layer in personal layer
